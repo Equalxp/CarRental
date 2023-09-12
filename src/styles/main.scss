@@ -31,7 +31,7 @@
 /* line-height */
 .lh-40 { line-height: 40px;}
 
-/* float */
+/* float 添加浮动的类名 */
 .pull-right { float: right; }
 .pull-left { float: left; }
 
@@ -48,7 +48,7 @@
 /* margin */
 .mr-15 { margin-right: 15px; }
 
-/* clearfix */
+/* clearfix 继承清除浮动的函数 */
 .clearfix { @extend %clearfix; }
 
 /* opacity */
