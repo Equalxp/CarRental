@@ -13,6 +13,16 @@ const routes = [
         path: '/user',
         name: 'User',
         component: () => import('../views/user')
+      },
+      {
+        path: '/safe',
+        name: 'Safe',
+        component: () => import('../views/safe/index')
+      },
+      {
+        path: '/password',
+        name: 'Password',
+        component: () => import('../views/safe/password.vue')
       }
     ]
   },

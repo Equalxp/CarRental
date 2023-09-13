@@ -16,14 +16,15 @@
 export default {
   name: "Navbar",
   methods: {
-    // toUser() {
-    //   this.$router.push({
-    //     name: getToken() ? "User" : "Login"
-    //   })
-    // },
-    // selfLocation() {
-    //   this.$store.commit("location/SELF_LOCATION")
-    // }
+    toUser() {
+      this.$router.push({
+        // name: getToken() ? "User" : "Login"
+        name: 'User'
+      })
+    },
+    selfLocation() {
+      // this.$store.commit("location/SELF_LOCATION")
+    }
   }
 }
 </script>

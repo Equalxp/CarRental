@@ -148,7 +148,14 @@
   right: 0;
   bottom: 0;
   padding-top: 0;
+  height: 0;
+  @include webkit(transition, all .3s ease 0s);
 
+  // 做滚动
+  .scroll {
+    height: 100%;
+    overflow-y: auto;
+  }
   .column {
     position: relative;
     padding: 26px 0px 20px;
@@ -160,7 +167,7 @@
     .close {
       position: absolute;
       right: 0px;
-      top: 23px;
+      top: 25px;
       display: block;
       width: 26px;
       height: 26px;
@@ -227,6 +234,7 @@
 
 .cars-type-list {
   li {
+    // li有固定的高度 不需要清除浮动了
     height: 43px;
     padding: 0 17px 0 20px;
     margin-bottom: 15px;
@@ -237,16 +245,13 @@
     border-radius: 10px;
     font-size: 16px;
     line-height: 43px;
-
     &.current {
       border-color: #0f9cee;
     }
   }
-
   .name {
     float: left;
   }
-
   .price {
     float: right;
   }

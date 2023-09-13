@@ -3,7 +3,7 @@
     <!-- 地图 -->
     <Map></Map>
     <!-- dom渲染操作 -->
-    <Cars></Cars>
+    <!-- <Cars></Cars> -->
     <!-- 导航 -->
     <NavBar></NavBar>
     <!-- 会员 -->
@@ -17,7 +17,7 @@
 <script>
 import Map from "../amap/index.vue"
 import Cars from "../cars/index.vue"
-import NavBar from '@c/navbar'
+import NavBar from "@c/navbar"
 export default {
   name: "Index",
   components: {
@@ -26,20 +26,30 @@ export default {
     NavBar
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     show() {
+      // 非Index页面都会打开user
       const router = this.$route
-      console.log(router);
-      return router.name === 'Index' ? false : true
+      return router.name === "Index" ? false : true
     }
   },
+  mounted() {
+    document.addEventListener("mouseup", e => {
+      const userCon = document.getElementById("children-view")
+      // 是否包含 点击会员界面的其他地方就push
+      if (userCon && !userCon.contains(e.target)) {
+        // vue-router 实例上的 push 方法返回的是 promise 对象
+        // 传入的参数希望是一个有成功和失败的回调不写报错
+        this.$router.push({
+          name: "Index"
+        },()=>{},()=>{})
+      }
+    })
+  },
   // 监听路由的变化
-  watch: {
-  }
+  watch: {}
 }
 </script>
 
@@ -54,11 +64,11 @@ export default {
   background-color: #34393f;
   // @include webkit(transition, all .3s ease 0s);
   // @include webkit(box-shadow, -5px 0 38px 0 rgba(0, 0, 0, .4));
-  -webkit-transition: all .3s ease 0s;
-  -moz-transition: all .3s ease 0s;
-  -ms-transition: all .3s ease 0s;
-  -o-transition: all .3s ease 0s;
-  transition: all .3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -ms-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
   &.open {
     right: 0;
   }
