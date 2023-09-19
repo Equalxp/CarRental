@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 地图 -->
-    <Map></Map>
+    <Map @callbackComponent="callbackComponent"></Map>
     <!-- dom渲染操作 -->
     <!-- <Cars></Cars> -->
     <!-- 导航 -->
@@ -11,6 +11,7 @@
       <router-view />
     </div>
     <!-- login -->
+    <LoginVue></LoginVue>
   </div>
 </template>
 
@@ -18,12 +19,15 @@
 import Map from "../amap/index.vue"
 import Cars from "../cars/index.vue"
 import NavBar from "@c/navbar"
+import LoginVue from "./login.vue"
+import { Parking } from "@/api/parking"
 export default {
   name: "Index",
   components: {
     Map,
     Cars,
-    NavBar
+    NavBar,
+    LoginVue
   },
   data() {
     return {}
@@ -40,13 +44,38 @@ export default {
       const userCon = document.getElementById("children-view")
       // 是否包含 点击会员界面的其他地方就push
       if (userCon && !userCon.contains(e.target)) {
+        const routerName = this.$router.name
+        if (routerName == "Index") {
+          return false
+        }
         // vue-router 实例上的 push 方法返回的是 promise 对象
         // 传入的参数希望是一个有成功和失败的回调不写报错
-        this.$router.push({
-          name: "Index"
-        },()=>{},()=>{})
+        this.$router.push(
+          {
+            name: "Index"
+          },
+          () => {},
+          () => {}
+        )
       }
     })
+  },
+  methods: {
+    callbackComponent(params) {
+      params.function && this[params.function](params.data)
+    },
+    // 地图回调
+    loadMap() {
+      // console.log(111);
+      this.getParking()
+    },
+    // 湖区停车场数据
+    getParking() {
+      Parking().then(response => {
+        const data = response.data.data
+        console.log("getParking", data)
+      })
+    }
   },
   // 监听路由的变化
   watch: {}

@@ -43,13 +43,12 @@ export default {
   data() {
     return {
       logout() {
-        console.log('退出登录');
+        alert("退出登录")
+        console.log("退出登录")
       }
     }
   },
-  methods: {
-    
-  }
+  methods: {}
 }
 </script>
 
