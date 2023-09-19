@@ -19,11 +19,11 @@ export default {
     toUser() {
       this.$router.push({
         // name: getToken() ? "User" : "Login"
-        name: 'User'
+        name: "User"
       })
     },
     selfLocation() {
-      // this.$store.commit("location/SELF_LOCATION")
+      this.$store.commit("location/SELF_LOCATION")
     }
   }
 }

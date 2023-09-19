@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 地图 -->
-    <Map @callbackComponent="callbackComponent"></Map>
+    <Map ref="map" @callbackComponent="callbackComponent"></Map>
     <!-- dom渲染操作 -->
     <!-- <Cars></Cars> -->
     <!-- 导航 -->
@@ -30,7 +30,9 @@ export default {
     LoginVue
   },
   data() {
-    return {}
+    return {
+      parking: []
+    }
   },
   computed: {
     show() {
@@ -73,7 +75,18 @@ export default {
     getParking() {
       Parking().then(response => {
         const data = response.data.data
-        console.log("getParking", data)
+        // console.log("getParking", data)
+        data.forEach(item => {
+          item.position = item.lnglat.split(",")
+          item.content = "<img src='" + require("@/assets/images/parking_location_img.png") + "' />"
+          item.offset = [-35, -60]
+          item.offsetText = [-30, -55]
+          // 可以停放的车辆
+          item.text = `<div style="width: 60px; font-size: 20px; color: #fff; text-align: center;line-height: 50px; height: 60px;">${item.carsNumber}</div>`
+        })
+        // this.parking = data
+        // 调地图的方法
+        this.$refs.map.parkingData(data)
       })
     }
   },
