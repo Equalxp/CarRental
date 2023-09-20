@@ -68,6 +68,7 @@ export default {
         complete: val => this.selfLocationComplete(val)
       })
     },
+    // 自身定位完成的回调
     selfLocationComplete(data) {
       this.self_lng = data.position.lng
       this.self_lat = data.position.lat
@@ -89,7 +90,7 @@ export default {
         this[params.key] = params.value
       }
     },
-
+    // 处理路线
     handlerWalking(lnglat) {
       // console.log('Walking');
       // 路线规划
@@ -138,5 +139,6 @@ export default {
 <style lang="scss">
 .amap-wrap {
   height: 100vh;
+  
 }
 </style>
