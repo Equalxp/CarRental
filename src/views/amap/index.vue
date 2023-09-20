@@ -6,14 +6,18 @@
       <!--覆盖物 - 停车场-->
       <el-amap-marker v-for="(item, index) in parking" :key="item.id" :content="item.content" :position="item.position" :offset="item.offset" :vid="index"></el-amap-marker>
       <!--覆盖物 - 停车场车辆 -->
-      <el-amap-marker v-for="(item, index) in parkingCarsNumber" :content="item.text" :key="item.id + 1" :offset="item.offsetText" :position="item.position" :vid="index"></el-amap-marker>
+      <el-amap-marker v-for="(item, index) in parking" :extData="item" :events="item.events" :content="item.text" :key="item.id + index" :offset="item.offsetText" :position="item.position" :vid="index"></el-amap-marker>
       <!--覆盖物 - 停车场 - 距离信息-->
+      <el-amap-marker v-for="(item, index) in parkingInfo" zInde="10000" :content="item.text" :key="item.id" :offset="item.offset" :position="item.position" :vid="index"></el-amap-marker>
     </el-amap>
   </div>
 </template>
 
 <script>
 import { SelfLocation } from "./location"
+import { Walking } from "./walking"
+// 样式
+import StyleCss from "./style"
 import { AMapManager, lazyAMapApiLoaderInstance } from "vue-amap"
 let amapManager = new AMapManager()
 export default {
@@ -37,20 +41,9 @@ export default {
         }
       },
       // 自身定位
-      circle: [
-        {
-          // center: [121.59996, 31.197646],
-          center: [0, 0],
-          radius: 4,
-          color: "#393e43",
-          strokeOpacity: 0.2,
-          strokeWeight: 30
-        }
-      ],
+      circle: [],
       // 停车场位置
-      parking: [],
-      //
-      parkingCarsNumber: [],
+      parkingData: {},
       // 停车场信息
       parkingInfo: []
     }
@@ -65,40 +58,77 @@ export default {
         // 带出去func
         function: "loadMap"
       })
-      // 自身定位
-      this.selfLocation()
+      // 加载之后立即 自身定位
+      this._selfLocation()
     },
     // 自身定位
-    selfLocation() {
+    _selfLocation() {
       SelfLocation({
         map: this.map,
         complete: val => this.selfLocationComplete(val)
       })
     },
     selfLocationComplete(data) {
-      const lng = data.position.lng
-      const lat = data.position.lat
-      console.log(lng, lat)
-      this.circle[0].center = [lng, lat]
+      this.self_lng = data.position.lng
+      this.self_lat = data.position.lat
+      // console.log("selfLocationComplete", this.self_lng, this.self_lat)
+      const json = {
+        // center: [121.59996, 31.197646],
+        center: [0, 0],
+        radius: 4,
+        color: "#393e43",
+        strokeOpacity: 0.2,
+        strokeWeight: 30
+      }
+      json.center = [this.self_lng, this.self_lat]
+      this.circle.push(json)
     },
-    parkingData(data) {
-      console.log(data)
-      this.parking = data
-      this.parkingCarsNumber = data
+    // 数据存储
+    saveData(params) {
+      if (this[params.key]) {
+        this[params.key] = params.value
+      }
+    },
+
+    handlerWalking(lnglat) {
+      // console.log('Walking');
+      // 路线规划
+      Walking({
+        map: this.map,
+        position_start: [this.self_lng, this.self_lat],
+        position_end: lnglat,
+        complete: val => this.handlerWalkingCompelete(val)
+      })
+    },
+    handlerWalkingCompelete(data) {
+      // console.log("handlerWalkingCompelete", data)
+      console.log("handlerWalkingCompelete", this.parkingData)
+      this.parkingInfo = [
+        {
+          // 数据处理
+          position: this.parkingData.lnglat.split(","),
+          text: `<div style='${StyleCss.parkingInfoWrap}'>
+                    <span style="${StyleCss.parkingInfoNumber}">${this.parkingData.carsNumber}</span>
+                    辆车<span style="${StyleCss.parkingInfoLine}"></span>距离您${data.routes[0].distance}米
+                  </div>`,
+          offset: [-15, -54]
+        }
+      ]
     }
   },
   mounted() {},
   props: {
-    // parking: {
-    //   type: Array,
-    //   default: () => []
-    // }
+    parking: {
+      type: Array,
+      default: () => []
+    }
   },
   watch: {
+    // 监听
     "$store.state.location.selfLocation": {
       handler() {
         console.log("调用selfLocation")
-        this.selfLocation()
+        this._selfLocation()
       }
     }
   }

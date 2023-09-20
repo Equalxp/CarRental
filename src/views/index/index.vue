@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 地图 -->
-    <Map ref="map" @callbackComponent="callbackComponent"></Map>
+    <Map ref="map" :parking="parking" @callbackComponent="callbackComponent"></Map>
     <!-- dom渲染操作 -->
     <!-- <Cars></Cars> -->
     <!-- 导航 -->
@@ -83,11 +83,24 @@ export default {
           item.offsetText = [-30, -55]
           // 可以停放的车辆
           item.text = `<div style="width: 60px; font-size: 20px; color: #fff; text-align: center;line-height: 50px; height: 60px;">${item.carsNumber}</div>`
+          item.events = {
+            click: val => this.walking(val)
+          }
         })
-        // this.parking = data
-        // 调地图的方法
-        this.$refs.map.parkingData(data)
+        // 传参数
+        this.parking = data
       })
+    },
+    walking(val) {
+      // console.log("extDa ta", val.target.getExtData())
+      const data = val.target.getExtData()
+      this.$refs.map.saveData({
+        key: 'parkingData',
+        value: data
+      })
+      
+      // 直接传递经纬度
+      this.$refs.map.handlerWalking(data.lnglat.split(','))
     }
   },
   // 监听路由的变化
