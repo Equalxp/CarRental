@@ -12,18 +12,17 @@
   </div>
 </template>
 <script>
-// import { getToken } from "@/utils/cookiesCars"
+import { getAccountToken } from "@/utils/cookies"
 export default {
   name: "Navbar",
   methods: {
     toUser() {
       this.$router.push({
-        // name: getToken() ? "User" : "Login"
-        name: 'User'
+        name: getAccountToken() ? "User" : "Login"
       })
     },
     selfLocation() {
-      // this.$store.commit("location/SELF_LOCATION")
+      this.$store.commit("location/SELF_LOCATION")
     }
   }
 }
