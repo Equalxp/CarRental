@@ -1,8 +1,8 @@
 <template>
   <!-- 验证 自定义检验规则 -->
-  <el-form-item prop="password" :rules="[{ validator: validatePassword, trigger: 'change' }]">
+  <el-form-item id="password" prop="password" :rules="[{ validator: validatePassword, trigger: 'change' }]">
     <!-- password双向绑定 -->
-    <el-input v-model="password" :placeholder="placeholder" v-on:input="enterInput"></el-input>
+    <el-input type="password" v-model="password" :placeholder="placeholder" v-on:input="enterInput"></el-input>
   </el-form-item>
 </template>
 
@@ -52,7 +52,14 @@ export default {
   watch: {
     passwordConfirm: {
       handler(newValue, oldValue) {
-        // this.validatePassword()  // 当做是一个 BUG 的存在，后续会解决此问题。
+        //  BUG
+        // this.validatePassword()
+        if (newValue == this.password) {
+          const errorDom = document.getElementById("password").querySelector(".el-form-item__error")
+          if (errorDom) {
+            errorDom.style.display = "none"
+          }
+        }
       }
     }
   }

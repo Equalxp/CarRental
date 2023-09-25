@@ -1,7 +1,11 @@
 <template>
   <div class="user-container">
     <!-- back是全局组件 -->
-    <Back column="修改登录密码"></Back>
+    <Back>
+      <template v-slot:navHeaderRight>
+        <router-link to="/register" class="color-white opacity-4">注册</router-link>
+      </template>
+    </Back>
     <div class="cars-form-ui">
       <el-form ref="form" :model="form">
         <!-- 组件的双向绑定 -->
@@ -21,8 +25,10 @@
 <script>
 import Username from "@/components/account/username"
 import PasswordVue from "@/components/account/password"
+// sha1
+import sha1 from "js-sha1"
 export default {
-  name: "Password",
+  name: "Login",
   components: { Username, PasswordVue },
   data() {
     return {
@@ -36,13 +42,27 @@ export default {
     onSubmit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          alert("submit!")
+          this.login()
         } else {
           console.log("error submit!!")
           return false
         }
       })
-      console.log(this.form)
+    },
+    login() {
+      const requestData = {
+        username: this.form.username,
+        password: sha1(this.form.password)
+      }
+      this.$store.dispatch("account/loginAction", requestData).then(response => {
+        this.$message({
+          type: "success",
+          message: response.message
+        })
+        this.$router.push({
+          name: "Index"
+        })
+      })
     }
   }
 }

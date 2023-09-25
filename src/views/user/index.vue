@@ -3,7 +3,7 @@
     <div class="user-info">
       <img src="../../assets/images/face.png" alt="" />
       <div class="meta">
-        <h4 class="name">lxxp</h4>
+        <h4 class="name">{{ usename }}</h4>
         <span>
           文明驾驶分
           <strong>0</strong>
@@ -37,18 +37,24 @@
 </template>
 
 <script>
+// cookies
+import { removeToken, removeUsername } from "@/utils/cookiesCars"
 export default {
   name: "User",
   components: {},
   data() {
     return {
-      logout() {
-        console.log('退出登录');
-      }
+      usename: this.$store.state.account.username
     }
   },
   methods: {
-    
+    logout() {
+      this.$store.dispatch("account/logoutAction").then(() => {
+        this.$router.replace({
+          name: "Index"
+        })
+      })
+    }
   }
 }
 </script>
