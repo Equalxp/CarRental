@@ -3,7 +3,7 @@
     <!-- 地图 -->
     <Map ref="map" :parking="parking" @callbackComponent="callbackComponent"></Map>
     <!-- dom渲染操作 -->
-    <!-- <Cars></Cars> -->
+    <Cars ref="cars"></Cars>
     <!-- 导航 -->
     <NavBar></NavBar>
     <!-- 会员 -->
@@ -41,27 +41,7 @@ export default {
       return router.name === "Index" ? false : true
     }
   },
-  mounted() {
-    document.addEventListener("mouseup", e => {
-      const userCon = document.getElementById("children-view")
-      // 是否包含 点击会员界面的其他地方就push
-      if (userCon && !userCon.contains(e.target)) {
-        const routerName = this.$router.name
-        if (routerName == "Index") {
-          return false
-        }
-        // vue-router 实例上的 push 方法返回的是 promise 对象
-        // 传入的参数希望是一个有成功和失败的回调不写报错
-        this.$router.push(
-          {
-            name: "Index"
-          },
-          () => {},
-          () => {}
-        )
-      }
-    })
-  },
+
   methods: {
     callbackComponent(params) {
       params.function && this[params.function](params.data)
@@ -84,7 +64,14 @@ export default {
           // 可以停放的车辆
           item.text = `<div style="width: 60px; font-size: 20px; color: #fff; text-align: center;line-height: 50px; height: 60px;">${item.carsNumber}</div>`
           item.events = {
-            click: val => this.walking(val)
+            click: val => {
+              // 点击后 标记要"请求停车场"
+              this.$store.commit("app/SET_CARS_LIST_REQUEST", true)
+              // 路线规划
+              this.walking(val)
+              // 那停车场的id去请求
+              this.getCarsList(val)
+            }
           }
         })
         // 传参数
@@ -95,12 +82,17 @@ export default {
       // console.log("extDa ta", val.target.getExtData())
       const data = val.target.getExtData()
       this.$refs.map.saveData({
-        key: 'parkingData',
+        key: "parkingData",
         value: data
       })
-      
       // 直接传递经纬度
-      this.$refs.map.handlerWalking(data.lnglat.split(','))
+      this.$refs.map.handlerWalking(data.lnglat.split(","))
+    },
+    getCarsList(e) {
+      const data = e.target.getExtData()
+      // 父组件调用子组件方法
+      this.$refs.cars && this.$refs.cars.getCarsList(data.id)
+      // console.log("getCarsList", data)
     }
   },
   // 监听路由的变化

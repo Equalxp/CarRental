@@ -103,7 +103,7 @@ export default {
     },
     handlerWalkingCompelete(data) {
       // console.log("handlerWalkingCompelete", data)
-      console.log("handlerWalkingCompelete", this.parkingData)
+      // console.log("handlerWalkingCompelete", this.parkingData)
       this.parkingInfo = [
         {
           // 数据处理
