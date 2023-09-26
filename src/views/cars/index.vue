@@ -2,7 +2,7 @@
   <div class="cars-wrap">
     <div class="cars-swiper-wrap">
       <swiper class="swiper" :options="swiperOption">
-        <swiper-slide><CarsItem height='700px' /></swiper-slide>
+        <swiper-slide><CarsItem height="700px" /></swiper-slide>
         <swiper-slide><CarsItem /></swiper-slide>
         <swiper-slide><CarsItem /></swiper-slide>
         <swiper-slide><CarsItem /></swiper-slide>
@@ -16,7 +16,7 @@
 
 <script>
 // cars item
-import CarsItem from "../../components/carsList/index"
+import CarsItem from "../../components/carsList/index.vue"
 import { Swiper, SwiperSlide } from "vue-awesome-swiper"
 import "swiper/css/swiper.css"
 export default {
