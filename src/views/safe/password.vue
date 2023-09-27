@@ -4,15 +4,19 @@
     <Back column='修改登录密码'></Back>
     <div class="cars-form-ui">
       <el-form ref="form" :model="form">
+        <!-- 旧密码 -->
         <el-form-item>
           <el-input v-model="form.name" placeholder="原始密码"></el-input>
         </el-form-item>
+        <!-- 新密码 -->
         <el-form-item>
           <el-input v-model="form.name" placeholder="新密码"></el-input>
         </el-form-item>
+        <!-- 新密码 -->
         <el-form-item>
           <el-input v-model="form.name" placeholder="确认密码"></el-input>
         </el-form-item>
+        <!-- 验证码 -->
         <el-form-item>
           <button type="button" class="button-vcode">获取验证码</button>
           <el-input v-model="form.name" placeholder="验证码"></el-input>

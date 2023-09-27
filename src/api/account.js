@@ -1,5 +1,4 @@
 import service from "../utils/request";
-
 // 获取验证码
 export function GetCode(data) {
   return service.request({
@@ -26,7 +25,6 @@ export function Login(data) {
     data
   })
 }
-
 
 // 忘记密码
 export function Forget(data) {

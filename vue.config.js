@@ -53,7 +53,6 @@ module.exports = {
   pwa: {},
   // webpack-dev-server 相关配置
   devServer: {
-
     open: false, // 编译完成是否打开网页
     host: '0.0.0.0', // 指定使用地址，默认localhost,0.0.0.0代表可以被外界访问
     port: 8080, // 访问端口
