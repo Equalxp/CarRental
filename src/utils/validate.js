@@ -3,11 +3,13 @@ export function validate_email(value){
     return regEmail.test(value);
 }
 
+// 手机号
 export function validate_phone(value){ // 1  3    713746864   13、14、15、17、18、19
     let regPhone = /^1[345789]\d{9}$/;
     return regPhone.test(value);
 }
 
+// 密码的验证
 export function validate_password(value){
     let regPassword = /^(?!\D+$)(?![^a-zA-Z]+$)\S{6,20}$/;
     return regPassword.test(value);

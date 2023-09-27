@@ -41,6 +41,10 @@
   span {
     padding: 0 5px;
   }
+
+  span {
+    padding: 0 5px;
+  }
 }
 
 .cars-content {
@@ -121,6 +125,7 @@
 }
 
 .park-link {
+  color: #000000;
   position: relative;
   display: block;
   border-top: 1px solid #e1e1e1;
@@ -148,6 +153,7 @@
   right: 0;
   bottom: 0;
   padding-top: 0;
+  // 过渡
   height: 0;
   @include webkit(transition, all .3s ease 0s);
 
@@ -156,6 +162,7 @@
     height: 100%;
     overflow-y: auto;
   }
+
   .column {
     position: relative;
     padding: 26px 0px 20px;
@@ -245,13 +252,16 @@
     border-radius: 10px;
     font-size: 16px;
     line-height: 43px;
+
     &.current {
       border-color: #0f9cee;
     }
   }
+
   .name {
     float: left;
   }
+
   .price {
     float: right;
   }

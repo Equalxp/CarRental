@@ -15,10 +15,13 @@ const service = axios.create({
 // 拦截器
 // 添加请求拦截器
 service.interceptors.request.use(function (config) {
-    // 在发送请求之前做些什么
-    config.headers['Token'] = getToken();  // 携带token
-    config.headers['Tokencars'] = getTokenCars();  // 携带会员的token
-    config.headers['Username'] = getUsername();  // 携带token
+    // 在发送请求之前做什么
+    // 携带token
+    config.headers['Token'] = getToken();
+    // 携带会员的token
+    config.headers['Tokencars'] = getTokenCars();
+    // 携带token
+    config.headers['Username'] = getUsername();
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -29,10 +32,10 @@ service.interceptors.request.use(function (config) {
 service.interceptors.response.use(function (response) {
     const data = response.data;
     // 不为0，即接口异常时
-    if(data.resCode !== 0) {
+    if (data.resCode !== 0) {
         Message.error(data.message);
         return Promise.reject(data);
-    }else {
+    } else {
         return data; // return Promise.resolve(data);
     }
 }, function (error) {
