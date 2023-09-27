@@ -1,5 +1,6 @@
 
 import service from "../utils/request";
+
 // 支付查询订单状态
 export function OrderStatus(data = {}) {
   return service.request({
@@ -41,15 +42,6 @@ export function CarsReturn(data = {}) {
   return service.request({
     method: "post",
     url: `${process.env.VUE_APP_API_WEB}/carsReturn/`,
-    data
-  })
-}
-
-// 还车
-export function CarsReturns(data = {}) {
-  return service.request({
-    method: "post",
-    url: `${process.env.VUE_APP_API_WEB}/carsReturnS/`,
     data
   })
 }

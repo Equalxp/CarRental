@@ -23,9 +23,9 @@ export default {
   },
   methods: {
     goHome() {
-      console.log("gohome")
+      // console.log("gohome")
       this.$router.push({
-        // name:''
+        name: "User"
       })
     }
   }
