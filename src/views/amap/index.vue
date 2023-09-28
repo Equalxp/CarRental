@@ -63,8 +63,10 @@ export default {
     },
     // 自身定位
     _selfLocation() {
+      console.log('调用SelfLocation');
       SelfLocation({
         map: this.map,
+        // 完成函数调用的回调
         complete: val => this.selfLocationComplete(val)
       })
     },
@@ -81,6 +83,7 @@ export default {
         strokeOpacity: 0.2,
         strokeWeight: 30
       }
+      // 获取到自身定位数据
       json.center = [this.self_lng, this.self_lat]
       this.circle.push(json)
     },
@@ -128,7 +131,7 @@ export default {
     // 监听
     "$store.state.location.selfLocation": {
       handler() {
-        console.log("调用selfLocation")
+        // console.log("selfLocation被监听值改变了")
         this._selfLocation()
       }
     }

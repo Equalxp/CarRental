@@ -17,8 +17,12 @@
       <router-link :to="{ path: '/orderDetailed', query: { order_no: cars_active_data.order_no } }" class="color-white">正在使用的车辆</router-link>
     </div>
     <div class="button-groure" v-if="cars_active_data && cars_active_data.order_no">
+      <div v-if="cars_active_data.order_status == 'RETURN'">
+        停车场的ID：
+        <el-button size="mini" v-for="item in parkingIdItem" :key="item" @click="parking_id = item" :type="parking_id == item ? 'primary' : ''">{{ item }}</el-button>
+      </div>
       <el-button type="primary" size="small" @click="carsGet" v-if="cars_active_data.order_status == 'WAIT'">取车</el-button>
-      <el-button type="primary" size="small" @click="carsReturn" v-if="cars_active_data.order_status == 'RETURN'">还车</el-button>
+      <el-button type="primary" size="small" @click="carsReturns" v-if="cars_active_data.order_status == 'RETURN'">还车</el-button>
       <el-button type="primary" size="small" @click="carsCancel" v-if="cars_active_data.order_status == 'WAIT'">取消</el-button>
     </div>
   </div>
@@ -30,7 +34,7 @@ import Cars from "../cars/index.vue"
 import NavBar from "@c/navbar"
 import LoginVue from "./login.vue"
 import { Parking } from "@/api/parking"
-import { GetCarsActivation, CarsGet, CarsReturn, CarsCancel } from "@/api/order"
+import { GetCarsActivation, CarsGet, CarsReturn, CarsCancel, CarsReturns } from "@/api/order"
 export default {
   name: "Index",
   components: {
@@ -43,7 +47,9 @@ export default {
     return {
       parking: [],
       // 获取是字符串 转为json对象 用key取value
-      cars_active_data: JSON.parse(localStorage.getItem("cars_active"))
+      cars_active_data: JSON.parse(localStorage.getItem("cars_active")),
+      // 停车场id
+      parking_id: ""
     }
   },
   beforeMount() {
@@ -54,6 +60,9 @@ export default {
       // 非Index页面都会打开user
       const router = this.$route
       return router.name === "Index" ? false : true
+    },
+    parkingIdItem() {
+      return this.$store.state.location.parking_id
     }
   },
 
@@ -66,7 +75,7 @@ export default {
       // console.log(111);
       this.getParking()
     },
-    // 湖区停车场数据
+    // 获取停车场数据
     getParking() {
       Parking().then(response => {
         const data = response.data.data
@@ -91,6 +100,10 @@ export default {
         })
         // 传参数
         this.parking = data
+        // 获取停车场id
+        const parkingId = data.map(item => item.id)
+        this.$store.commit("location/SET_PARKING_ID", parkingId)
+        console.log("parkingID", parkingId)
       })
     },
     walking(val) {
@@ -132,9 +145,14 @@ export default {
         }
       })
     },
-    carsReturn() {
-      CarsReturn({ order_no: this.cars_active_data.order_no, cars_id: this.cars_active_data.cars_id }).then(response => {
-        console.log("carsReturn", response)
+    // 还车
+    carsReturns() {
+      CarsReturns({
+        // 订单id 车id 停车场id
+        order_no: this.cars_active_data.order_no,
+        cars_id: this.cars_active_data.cars_id,
+        parking_id: this.parking_id
+      }).then(response => {
         this.$message({
           message: response.message,
           type: "success"

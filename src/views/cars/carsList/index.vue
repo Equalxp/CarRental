@@ -216,58 +216,52 @@ export default {
         // 需要选择点击
         cars_lease_type_id: this.leaseId
       }
-      ConfirmCars(requestData)
-        .then(res => {
-          const data = res.data
-          // 会返回没有通过的if的key值 :[check_real_name]
-          const key = Object.keys(data)
-          if (key && key.length > 0) {
-            // 临时存储
-            this.backup_key = key[0]
-            // 实名认证 驾驶证 押金 违约金
-            if (this.arr.includes(key[0])) {
-              let message = ""
-              let msg = this.message_item[key[0]].msg
-              msg && (message = msg)
-              // 弹窗提示
-              this.$confirm(message, "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-              }).then(() => {
-                // 进行路由跳转
-                let router = this.message_item[this.backup_key].router
-                console.log("confirm", this.message_item[this.backup_key])
-                if (router) {
-                  this.$router.push({
-                    // 跳转路由
-                    name: router,
-                    query: {
-                      // type为携带的参数
-                      type: this.message_item[this.backup_key].type
-                    }
-                  })
-                }
-              })
-            } else {
-              // 已经预订其他车辆
+      // 发请求预约用车
+      ConfirmCars(requestData).then(res => {
+        const data = res.data
+        // 会返回没有通过的if的key值 :[check_real_name]
+        const key = Object.keys(data)
+        if (key && key.length > 0) {
+          // 临时存储
+          this.backup_key = key[0]
+          // 实名认证 驾驶证 押金 违约金
+          if (this.arr.includes(key[0])) {
+            let message = ""
+            let msg = this.message_item[key[0]].msg
+            msg && (message = msg)
+            // 弹窗提示
+            this.$confirm(message, "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            }).then(() => {
+              // 进行路由跳转
+              let router = this.message_item[this.backup_key].router
+              console.log("confirm", this.message_item[this.backup_key])
+              if (router) {
+                this.$router.push({
+                  // 跳转路由
+                  name: router,
+                  query: {
+                    // type为携带的参数
+                    type: this.message_item[this.backup_key].type
+                  }
+                })
+              }
               this.$message({
-                message: this.message_item[this.backup_key].msg,
-                type: "error"
+                message: res.message,
+                type: "success"
               })
-            }
+            })
+          } else {
+            // 已经预订其他车辆
+            this.$message({
+              message: this.message_item[this.backup_key].msg,
+              type: "error"
+            })
           }
-          this.$message({
-            message: res.message,
-            type: "success"
-          })
-        })
-        .catch(error => {
-          this.$message({
-            message: error,
-            type: "error"
-          })
-        })
+        }
+      })
     }
   }
 }

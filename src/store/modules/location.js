@@ -1,10 +1,15 @@
 const state = {
-  selfLocation: true
+  selfLocation: true,
+  // 停车场ID，
+  parking_id: []
 }
 const mutations = {
   SELF_LOCATION(state) {
     // console.log(111);
     state.selfLocation = !state.selfLocation
+  },
+  SET_PARKING_ID(state, value) {
+    state.parking_id = value;
   }
 }
 const getters = {

@@ -12,6 +12,7 @@ export function SelfLocation(params) { //{ map: "", current: ""}
     });
   }
   // 已经有实例对象了
+  console.log('params', params);
   params.map.addControl(geolocation);
   geolocation.getCurrentPosition();
   if (params.complete && typeof params.complete == 'function') {

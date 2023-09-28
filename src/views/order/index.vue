@@ -11,7 +11,7 @@
     <div class="order-list">
       <div class="item" v-for="item in orderListData" :key="item.id" @click="detailed">
         <div class="info">
-          <time class="flex-1">{{ item.create_date }}</time>
+          <time class="flex-1">{{ item.create_date | date("all", ".") }}</time>
           <div class="flex-1">
             <span class="status" :class="'color-' + item.order_status">
               {{ casrStatus[item.order_status] ? casrStatus[item.order_status].zh : "" }}
@@ -31,17 +31,19 @@
 </template>
 <script>
 import { OrderList } from "@/api/order"
+import { fotmarDate } from "@/utils/common"
 export default {
   name: "User",
   components: {},
   data() {
     return {
       img: require("@/assets/images/level-img.png"),
-      orderListData: [],
-      pageNumber: 1,
-      pageSize: 10,
+      // 订单列表
+      order_list_data: [],
+      // 页码
+      page_number: 1,
       // 车辆状态
-      casrStatus: this.$store.state.config.cars_status
+      casr_status: this.$store.state.config.cars_status
     }
   },
   beforeMount() {
